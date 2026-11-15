@@ -8,8 +8,8 @@ app = FastAPI()
 
 # ⚠️ O'zingizning bot tokeningiz va chat ID raqamingizni shu yerga yozing
 # (Yoki Render'da Environment Variables ga qo'shgan bo'lsangiz o'zicha o'qiydi)
-BOT_TOKEN = os.getenv("BOT_TOKEN", "SIZNING_BOT_TOKENINGIZ")
-CHAT_ID = os.getenv("CHAT_ID", "SIZNING_CHAT_IDINGIZ")
+BOT_TOKEN = os.getenv("9258223617:AAHrUny-WK-tP3zGsjEaSWRe1F2y0hO9h9Q")
+CHAT_ID = os.getenv("7135553744")
 
 
 class Order(BaseModel):
