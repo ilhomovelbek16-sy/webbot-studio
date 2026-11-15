@@ -58,3 +58,9 @@ from fastapi.staticfiles import StaticFiles
 
 # Bu qator index.html va boshqa fayllarni internetga chiqaradi
 app.mount("/", StaticFiles(directory=".", html=True), name="static")
+from fastapi.responses import FileResponse
+
+
+@app.get("/")
+async def read_index():
+  return FileResponse("index.html")
