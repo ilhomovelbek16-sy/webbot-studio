@@ -105,8 +105,8 @@
             statusMsg.innerText = 'Buyurtma yuborilmoqda...';
 
             try {
-                // Serverga so'rov yuborish (Backend ishlayotgan manzil)
-                const response = await fetch('http://127.0.0.1:8000/api/order', {
+                // TO'G'RILANDI: Internetda ishlashi uchun nisbiy manzilga o'zgartirildi
+                const response = await fetch('/api/order', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, phone, project_type: projectType, total_price: totalPrice })
