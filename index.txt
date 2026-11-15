@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebBot Studio - Professional Buyurtma Tizimi</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #22c55e;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
+        header { background: rgba(15, 23, 42, 0.9); position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; padding: 1rem 5%; border-bottom: 1px solid #334155; z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
+        .logo span { color: var(--accent); }
+        .container { max-width: 900px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+        .calculator { background-color: var(--card-bg); border-radius: 16px; padding: 2.5rem; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        @media(max-width: 768px) { .calc-grid { grid-template-columns: 1fr; } }
+        .calc-group { margin-bottom: 1.2rem; }
+        .calc-group label { display: block; margin-bottom: 0.4rem; font-weight: 600; }
+        .calc-group select, .calc-group input { width: 100%; padding: 0.8rem; background-color: #0f172a; border: 1px solid #475569; color: white; border-radius: 8px; }
+        .total-box { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid var(--primary); border-radius: 12px; padding: 2rem; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+        .total-price { font-size: 2.3rem; font-weight: bold; color: var(--accent); margin: 0.5rem 0; }
+        .btn { background-color: var(--primary); color: white; padding: 0.8rem 2rem; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 1rem; }
+        .btn:hover { background-color: var(--primary-dark); }
+        #statusMsg { margin-top: 1rem; font-size: 0.9rem; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">WebBot<span>Studio</span></div>
+    </header>
+
+    <div class="container">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Loyihangiz Narxini Hisoblang va Buyurtma Bering</h2>
+        <div class="calculator">
+            <div class="calc-grid">
+                <div>
+                    <div class="calc-group">
+                        <label>Loyiha turi:</label>
+                        <select id="projectType" onchange="calculateTotal()">
+                            <option value="Telegram Bot (Oddiy) - $50">Telegram Bot (Oddiy) - $50</option>
+                            <option value="Telegram Bot (Internet do'kon) - $120">Telegram Bot (Internet do'kon) - $120</option>
+                            <option value="Landing Page - $80">Landing Page (Bir sahifali sayt) - $80</option>
+                            <option value="Korporativ Veb-sayt - $200">Korporativ Veb-sayt - $200</option>
+                        </select>
+                    </div>
+                    <div class="calc-group">
+                        <label>Ismingiz:</label>
+                        <input type="text" id="clientName" placeholder="Masalan: Aziz">
+                    </div>
+                    <div class="calc-group">
+                        <label>Telefon raqamingiz:</label>
+                        <input type="text" id="clientPhone" placeholder="+998 90 123 45 67">
+                    </div>
+                </div>
+
+                <div class="total-box">
+                    <h3>Taxminiy Qiymat:</h3>
+                    <div class="total-price" id="totalPrice">$50</div>
+                    <button class="btn" onclick="sendOrder()">Buyurtma Berish</button>
+                    <div id="statusMsg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Narxlarni aniqlash lug'ati
+        const prices = {
+            "Telegram Bot (Oddiy) - $50": 50,
+            "Telegram Bot (Internet do'kon) - $120": 120,
+            "Landing Page - $80": 80,
+            "Korporativ Veb-sayt - $200": 200
+        };
+
+        function calculateTotal() {
+            const val = document.getElementById('projectType').value;
+            const price = prices[val] || 50;
+            document.getElementById('totalPrice').innerText = '$' + price;
+        }
+
+        async function sendOrder() {
+            const name = document.getElementById('clientName').value.trim();
+            const phone = document.getElementById('clientPhone').value.trim();
+            const projectType = document.getElementById('projectType').value;
+            const totalPrice = document.getElementById('totalPrice').innerText;
+            const statusMsg = document.getElementById('statusMsg');
+
+            if (!name || !phone) {
+                statusMsg.style.color = '#f87171';
+                statusMsg.innerText = 'Iltimos, ism va telefon raqamingizni kiriting!';
+                return;
+            }
+
+            statusMsg.style.color = '#94a3b8';
+            statusMsg.innerText = 'Buyurtma yuborilmoqda...';
+
+            try {
+                // Serverga so'rov yuborish (Backend ishlayotgan manzil)
+                const response = await fetch('http://127.0.0.1:8000/api/order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, project_type: projectType, total_price: totalPrice })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    statusMsg.style.color = '#4ade80';
+                    statusMsg.innerText = 'Rahmat! Buyurtmangiz qabul qilindi, tez orada bog‘lanamiz.';
+                    document.getElementById('clientName').value = '';
+                    document.getElementById('clientPhone').value = '';
+                } else {
+                    throw new Error(result.detail || 'Xatolik yuz berdi');
+                }
+            } catch (error) {
+                statusMsg.style.color = '#f87171';
+                statusMsg.innerText = 'Xatolik: Server bilan aloqa yo\'q yoki backend ishga tushmagan.';
+            }
+        }
+    </script>
+</body>
+</html>
