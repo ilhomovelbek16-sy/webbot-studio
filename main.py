@@ -1,66 +1,51 @@
+import os
 from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import requests
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Shu yerdagi so'zlar o'rniga o'zingizning haqiqiy Bot Token va Chat ID ingizni yozing:
-BOT_TOKEN = "9258223617:AAHrUny-WK-tP3zGsjEaSWRe1F2y0hO9h9Q"
-CHAT_ID = "7135553744"
-
-class OrderSchema(BaseModel):
-    name: str
-    phone: str
-    project_type: str
-    total_price: str
-
-@app.post("/api/order")
-def create_order(order: OrderSchema):
-    if not order.name or not order.phone:
-        raise HTTPException(status_code=400, detail="Ism va telefon raqami kiritilishi shart!")
-    
-    text = (
-        f"Yangi buyurtma keldi!\n\n"
-        f"Mijoz: {order.name}\n"
-        f"Telefon: {order.phone}\n"
-        f"Loyiha turi: {order.project_type}\n"
-        f"Narxi: {order.total_price}"
-    )
-    
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    payload = {
-        "chat_id": CHAT_ID,
-        "text": text
-    }
-    
-    try:
-        response = requests.post(url, json=payload, timeout=10)
-        print("Telegram javobi:", response.text)
-        
-        if response.status_code != 200:
-            raise HTTPException(status_code=500, detail=f"Telegram xatosi: {response.text}")
-                    
-    except requests.exceptions.RequestException as e:
-        print("Tarmoq ulanishida xatolik:", str(e))
-        raise HTTPException(status_code=500, detail=f"Internetga ulanib bo'lmadi: {str(e)}")
-    
-    return {"status": "success", "message": "Buyurtma muvaffaqiyatli qabul qilindi!"}
-from fastapi.staticfiles import StaticFiles
-
-# Bu qator index.html va boshqa fayllarni internetga chiqaradi
-app.mount("/", StaticFiles(directory=".", html=True), name="static")
-from fastapi.responses import FileResponse
+# ⚠️ O'zingizning bot tokeningiz va chat ID raqamingizni shu yerga yozing
+# (Yoki Render'da Environment Variables ga qo'shgan bo'lsangiz o'zicha o'qiydi)
+BOT_TOKEN = os.getenv("BOT_TOKEN", "SIZNING_BOT_TOKENINGIZ")
+CHAT_ID = os.getenv("CHAT_ID", "SIZNING_CHAT_IDINGIZ")
 
 
+class Order(BaseModel):
+  name: str
+  phone: str
+  project_type: str
+  total_price: str
+
+
+# 1. Asosiy sahifada index.html faylini ochish (MUHIM QISM)
 @app.get("/")
-async def read_index():
+async def serve_index():
   return FileResponse("index.html")
+
+
+# 2. Buyurtmani qabul qilib Telegramga yuborish
+@app.post("/api/order")
+async def create_order(order: Order):
+  message = (
+      f"🔔 <b>Yangi buyurtma keldi!</b>\n\n"
+      f"👤 <b>Ism:</b> {order.name}\n"
+      f"📞 <b>Telefon:</b> {order.phone}\n"
+      f"💻 <b>Loyiha turi:</b> {order.project_type}\n"
+      f"💰 <b>Narxi:</b> {order.total_price}"
+  )
+
+  url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+  payload = {"chat_id": CHAT_ID, "text": message, "parse_mode": "HTML"}
+
+  try:
+    response = requests.post(url, json=payload)
+    if response.status_code != 200:
+      raise HTTPException(
+          status_code=500, detail="Telegramga xabar yuborishda xatolik"
+      )
+  except Exception as e:
+    raise HTTPException(status_code=500, detail=f"Server xatoligi: {str(e)}")
+
+  return {"status": "success", "message": "Buyurtma qabul qilindi"}
