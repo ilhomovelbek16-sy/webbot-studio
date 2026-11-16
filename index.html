@@ -3,128 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebBot Studio - Professional Buyurtma Tizimi</title>
-    <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #22c55e;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
-        header { background: rgba(15, 23, 42, 0.9); position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; padding: 1rem 5%; border-bottom: 1px solid #334155; z-index: 1000; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
-        .logo span { color: var(--accent); }
-        .container { max-width: 900px; margin: 0 auto; padding: 8rem 2rem 4rem; }
-        .calculator { background-color: var(--card-bg); border-radius: 16px; padding: 2.5rem; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-        @media(max-width: 768px) { .calc-grid { grid-template-columns: 1fr; } }
-        .calc-group { margin-bottom: 1.2rem; }
-        .calc-group label { display: block; margin-bottom: 0.4rem; font-weight: 600; }
-        .calc-group select, .calc-group input { width: 100%; padding: 0.8rem; background-color: #0f172a; border: 1px solid #475569; color: white; border-radius: 8px; }
-        .total-box { background: linear-gradient(135deg, #1e1b4b, #0f172a); border: 1px solid var(--primary); border-radius: 12px; padding: 2rem; text-align: center; display: flex; flex-direction: column; justify-content: center; }
-        .total-price { font-size: 2.3rem; font-weight: bold; color: var(--accent); margin: 0.5rem 0; }
-        .btn { background-color: var(--primary); color: white; padding: 0.8rem 2rem; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 1rem; }
-        .btn:hover { background-color: var(--primary-dark); }
-        #statusMsg { margin-top: 1rem; font-size: 0.9rem; text-align: center; }
-    </style>
+    <title>WebBot Studio - Professional Buyurtma Markazi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
 
-    <header>
-        <div class="logo">WebBot<span>Studio</span></div>
-    </header>
+    <!-- Asosiy qism -->
+    <main class="max-w-4xl mx-auto px-4 py-10 w-full">
+        
+        <!-- Sarlavha -->
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
+                WebBot Studio Xizmatlari
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base">Loyihangiz turini tanlang, narxini hisoblang va buyurtma bering!</p>
+        </header>
 
-    <div class="container">
-        <h2 style="text-align: center; margin-bottom: 2rem;">Loyihangiz Narxini Hisoblang va Buyurtma Bering</h2>
-        <div class="calculator">
-            <div class="calc-grid">
-                <div>
-                    <div class="calc-group">
-                        <label>Loyiha turi:</label>
-                        <select id="projectType" onchange="calculateTotal()">
-                            <option value="Telegram Bot (Oddiy) - $50">Telegram Bot (Oddiy) - $50</option>
-                            <option value="Telegram Bot (Internet do'kon) - $120">Telegram Bot (Internet do'kon) - $120</option>
-                            <option value="Landing Page - $80">Landing Page (Bir sahifali sayt) - $80</option>
-                            <option value="Korporativ Veb-sayt - $200">Korporativ Veb-sayt - $200</option>
-                        </select>
-                    </div>
-                    <div class="calc-group">
-                        <label>Ismingiz:</label>
-                        <input type="text" id="clientName" placeholder="Masalan: Aziz">
-                    </div>
-                    <div class="calc-group">
-                        <label>Telefon raqamingiz:</label>
-                        <input type="text" id="clientPhone" placeholder="+998 90 123 45 67">
-                    </div>
+        <!-- Portfolio Galereyasi (Oldingi ishlar) -->
+        <section class="mb-10">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-indigo-300">
+                <i class="fa-solid fa-briefcase"></i> Bizning ishlarimizdan namunalar
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl hover:border-indigo-500 transition">
+                    <div class="text-indigo-400 text-2xl mb-2"><i class="fa-solid fa-robot"></i></div>
+                    <h3 class="font-bold text-lg mb-1">Telegram Bot</h3>
+                    <p class="text-slate-400 text-xs">Internet do'kon va buyurtma qabul qiluvchi avtomatlashgan botlar.</p>
                 </div>
-
-                <div class="total-box">
-                    <h3>Taxminiy Qiymat:</h3>
-                    <div class="total-price" id="totalPrice">$50</div>
-                    <button class="btn" onclick="sendOrder()">Buyurtma Berish</button>
-                    <div id="statusMsg"></div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl hover:border-indigo-500 transition">
+                    <div class="text-cyan-400 text-2xl mb-2"><i class="fa-solid fa-globe"></i></div>
+                    <h3 class="font-bold text-lg mb-1">Web Saytlar</h3>
+                    <p class="text-slate-400 text-xs">Landing page va korporativ veb-saytlar dizayni.</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl hover:border-indigo-500 transition">
+                    <div class="text-emerald-400 text-2xl mb-2"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3 class="font-bold text-lg mb-1">Kibersafari Kurslari</h3>
+                    <p class="text-slate-400 text-xs">Web Hacking va App Security bo'yicha maxsus dasturlar.</p>
                 </div>
             </div>
+        </section>
+
+        <!-- Kalkulyator va Buyurtma Formasi -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-900/80 border border-slate-800 p-6 md:p-8 rounded-2xl shadow-xl backdrop-blur-md">
+            
+            <!-- Chap tomon: Kalkulyator va sozlamalar -->
+            <div class="space-y-6">
+                <h2 class="text-xl font-bold text-indigo-300 flex items-center gap-2">
+                    <i class="fa-solid fa-calculator"></i> Narx Kalkulyatori
+                </h2>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-slate-300">Loyiha turini tanlang:</label>
+                    <select id="projectType" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:border-indigo-500 transition">
+                        <option value="Telegram Bot (Standart)" data-price="50">Telegram Bot (Standart) - $50</option>
+                        <option value="Landing Page Veb-sayt" data-price="80">Landing Page Veb-sayt - $80</option>
+                        <option value="Internet Do'kon" data-price="150">Internet Do'kon - $150</option>
+                        <option value="Web Hacking Kursi" data-price="100">Web Hacking Kursi - $100</option>
+                    </select>
+                </div>
+
+                <!-- Qo'shimcha opsiyalar -->
+                <div class="space-y-3">
+                    <label class="block text-sm font-medium text-slate-300">Qo'shimcha imkoniyatlar:</label>
+                    <label class="flex items-center gap-3 text-sm cursor-pointer">
+                        <input type="checkbox" value="20" data-name="Admin Panel" class="addon-checkbox w-4 h-4 accent-indigo-500 rounded">
+                        <span>Admin Panel (+ $20)</span>
+                    </label>
+                    <label class="flex items-center gap-3 text-sm cursor-pointer">
+                        <input type="checkbox" value="30" data-name="Tezkor Muddat" class="addon-checkbox w-4 h-4 accent-indigo-500 rounded">
+                        <span>Tezkor tayyorlash (+ $30)</span>
+                    </label>
+                </div>
+
+                <!-- Narx ko'rsatish bloki -->
+                <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-center">
+                    <span class="text-xs text-slate-400 uppercase tracking-wider block mb-1">Taxminiy Narx:</span>
+                    <div id="totalPriceDisplay" class="text-3xl font-extrabold text-emerald-400">$50</div>
+                </div>
+            </div>
+
+            <!-- O'ng tomon: Forma -->
+            <form id="orderForm" class="space-y-4 flex flex-col justify-between">
+                <div class="space-y-4">
+                    <h2 class="text-xl font-bold text-indigo-300 flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Ma'lumotlaringiz
+                    </h2>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-slate-300">Ismingiz:</label>
+                        <input type="text" id="name" required placeholder="Masalan: Azizbek" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-slate-300">Telefon Raqam:</label>
+                        <input type="tel" id="phone" required placeholder="+998 90 123 45 67" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full mt-6 bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cart-shopping"></i> Buyurtma Berish
+                </button>
+            </form>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-slate-500 text-xs border-t border-slate-900 mt-10">
+        &copy; 2026 WebBot Studio. Barcha huquqlar himoyalangan.
+    </footer>
+
+    <!-- Floating Telegram Button -->
+    <a href="https://t.me/ilhomovelbek16_sy" target="_blank" class="fixed bottom-6 right-6 bg-cyan-500 hover:bg-cyan-400 text-slate-950 w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-2xl transition transform hover:scale-110 z-50" title="Biz bilan bog'lanish">
+        <i class="fa-brands fa-telegram"></i>
+    </a>
+
+    <!-- Success Modal Pop-up -->
+    <div id="successModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-800 max-w-sm w-full p-6 rounded-2xl text-center shadow-2xl space-y-4">
+            <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center text-3xl mx-auto">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Buyurtma Qabul qilindi!</h3>
+            <p class="text-slate-400 text-sm">Rahmat! Sizning buyurtmangiz muvaffaqiyatli yuborildi. Tez orada operatorimiz siz bilan bog'lanadi.</p>
+            <button onclick="closeModal()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-xl transition">
+                Tushunarli
+            </button>
         </div>
     </div>
 
+    <!-- JavaScript Logika -->
     <script>
-        // Narxlarni aniqlash lug'ati
-        const prices = {
-            "Telegram Bot (Oddiy) - $50": 50,
-            "Telegram Bot (Internet do'kon) - $120": 120,
-            "Landing Page - $80": 80,
-            "Korporativ Veb-sayt - $200": 200
-        };
+        const projectSelect = document.getElementById('projectType');
+        const checkboxes = document.querySelectorAll('.addon-checkbox');
+        const totalPriceDisplay = document.getElementById('totalPriceDisplay');
+        const orderForm = document.getElementById('orderForm');
+        const successModal = document.getElementById('successModal');
+        const phoneInput = document.getElementById('phone');
 
+        // Telefon raqamni maskalash (Avtomatik +998 formatlash)
+        phoneInput.addEventListener('input', function (e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,2})(\d{0,3})(\d{0,2})(\d{0,2})/);
+            e.target.value = !x[2] ? '+998 ' + x[1] : '+998 ' + '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '') + (x[4] ? '-' + x[4] : '');
+        });
+
+        // Narxni hisoblash funksiyasi
         function calculateTotal() {
-            const val = document.getElementById('projectType').value;
-            const price = prices[val] || 50;
-            document.getElementById('totalPrice').innerText = '$' + price;
+            let basePrice = parseInt(projectSelect.selectedOptions[0].getAttribute('data-price')) || 0;
+            let addonsTotal = 0;
+            checkboxes.forEach(box => {
+                if (box.checked) {
+                    addonsTotal += parseInt(box.value);
+                }
+            });
+            let total = basePrice + addonsTotal;
+            totalPriceDisplay.textContent = '$' + total;
+            return '$' + total;
         }
 
-        async function sendOrder() {
-            const name = document.getElementById('clientName').value.trim();
-            const phone = document.getElementById('clientPhone').value.trim();
-            const projectType = document.getElementById('projectType').value;
-            const totalPrice = document.getElementById('totalPrice').innerText;
-            const statusMsg = document.getElementById('statusMsg');
+        projectSelect.addEventListener('change', calculateTotal);
+        checkboxes.forEach(box => box.addEventListener('change', calculateTotal));
 
-            if (!name || !phone) {
-                statusMsg.style.color = '#f87171';
-                statusMsg.innerText = 'Iltimos, ism va telefon raqamingizni kiriting!';
-                return;
+        // Formani yuborish
+        orderForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Yuborilmoqda...';
+
+            let selectedProjectText = projectSelect.selectedOptions[0].value;
+            let addonsList = [];
+            checkboxes.forEach(box => {
+                if(box.checked) addonsList.push(box.getAttribute('data-name'));
+            });
+
+            if(addonsList.length > 0) {
+                selectedProjectText += " (" + addonsList.join(", ") + ")";
             }
 
-            statusMsg.style.color = '#94a3b8';
-            statusMsg.innerText = 'Buyurtma yuborilmoqda...';
+            const orderData = {
+                name: document.getElementById('name').value,
+                phone: phoneInput.value,
+                project_type: selectedProjectText,
+                total_price: totalPriceDisplay.textContent
+            };
 
             try {
-                // TO'G'RILANDI: Internetda ishlashi uchun nisbiy manzilga o'zgartirildi
                 const response = await fetch('/api/order', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, phone, project_type: projectType, total_price: totalPrice })
+                    body: JSON.stringify(orderData)
                 });
 
-                const result = await response.json();
                 if (response.ok) {
-                    statusMsg.style.color = '#4ade80';
-                    statusMsg.innerText = 'Rahmat! Buyurtmangiz qabul qilindi, tez orada bog‘lanamiz.';
-                    document.getElementById('clientName').value = '';
-                    document.getElementById('clientPhone').value = '';
+                    successModal.classList.remove('hidden');
+                    successModal.classList.add('flex');
+                    orderForm.reset();
+                    calculateTotal();
                 } else {
-                    throw new Error(result.detail || 'Xatolik yuz berdi');
+                    alert("Xatolik yuz berdi. Iltimos qaytadan urinib ko'ring.");
                 }
             } catch (error) {
-                statusMsg.style.color = '#f87171';
-                statusMsg.innerText = 'Xatolik: Server bilan aloqa yo\'q yoki backend ishga tushmagan.';
+                alert("Server bilan aloqa yo'q!");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Buyurtma Berish';
             }
+        });
+
+        function closeModal() {
+            successModal.classList.remove('flex');
+            successModal.classList.add('hidden');
         }
     </script>
 </body>
