@@ -196,35 +196,35 @@
         const phoneInput = document.getElementById('phone');
 
         // 1. Telefon raqamni maskalash (+998 (XX) XXX-XX-XX)
- // Telefon raqamni xatosiz va silliq maskalash (+998 (XX) XXX-XX-XX)
+        // Telefon raqamni toza va xatosiz maskalash
 phoneInput.addEventListener('input', function (e) {
-    let input = e.target.value.replace(/\D/g, '');
+    let val = e.target.value.replace(/\D/g, '');
     
-    // Agar foydalanuvchi 998 ni qaytdan yozsa, uni to'g'rilab ketish
-    if (input.startsWith('998')) {
-        input = input.substring(3);
+    // Agar foydalanuvchi 998 ni qaytadan yozsa, uni to'g'rilash
+    if (val.startsWith('998')) {
+        val = val.substring(3);
     }
     
-    // Ko'pi bilan 9 ta raqam kiritishiga ruxsat berish (masalan: 901234567)
-    input = input.substring(0, 9);
+    // Ko'pi bilan 9 ta raqam kiritishiga ruxsat berish
+    val = val.substring(0, 9);
     
     let result = '+998 ';
-    if (input.length > 0) {
-        result += '(' + input.substring(0, 2);
+    if (val.length > 0) {
+        result += '(' + val.substring(0, 2);
     }
-    if (input.length >= 2) {
-        result += ') ' + input.substring(2, 5);
+    if (val.length >= 2) {
+        result += ') ' + val.substring(2, 5);
     }
-    if (input.length >= 5) {
-        result += '-' + input.substring(5, 7);
+    if (val.length >= 5) {
+        result += '-' + val.substring(5, 7);
     }
-    if (input.length >= 7) {
-        result += '-' + input.substring(7, 9);
+    if (val.length >= 7) {
+        result += '-' + val.substring(7, 9);
     }
     
     e.target.value = result;
 });
-        });
+    
 
         // 2. Dinamik Narx Kalkulyatori
         function calculateTotal() {
