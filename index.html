@@ -196,37 +196,22 @@
         const successModal = document.getElementById('successModal');
         const phoneInput = document.getElementById('phone');
 
-        // 1. Telefon raqamni maskalash (+998 (XX) XXX-XX-XX)
-        // Telefon raqamni toza va xatosiz maskalash
-phoneInput.addEventListener('input', function (e) {
-    let val = e.target.value.replace(/\D/g, '');
-    
-    // Agar foydalanuvchi 998 ni qaytadan yozsa, uni to'g'rilash
-    if (val.startsWith('998')) {
-        val = val.substring(3);
-    }
-    
-    // Ko'pi bilan 9 ta raqam kiritishiga ruxsat berish
-    val = val.substring(0, 9);
-    
-    let result = '+998 ';
-    if (val.length > 0) {
-        result += '(' + val.substring(0, 2);
-    }
-    if (val.length >= 2) {
-        result += ') ' + val.substring(2, 5);
-    }
-    if (val.length >= 5) {
-        result += '-' + val.substring(5, 7);
-    }
-    if (val.length >= 7) {
-        result += '-' + val.substring(7, 9);
-    }
-    
-    e.target.value = result;
-});
-    
+        
+      // Buyurtmani tasdiqlash tugmasi bosilganda yoki forma yuborilganda:
+orderForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // Sahifa yangilanishini to'xtatish
 
+    let phoneValue = phoneInput.value.replace(/\D/g, ''); // Faqat raqamlarni olish
+
+    // Telefon raqam 998 dan keyin yana 9 ta raqamdan iborat bo'lishi shart (+998 O'zbekiston raqami uchun)
+    if (phoneValue.length < 12) {
+        alert("Iltimos, telefon raqamini to'liq kiriting! (Masalan: +998 90 123-45-67)");
+        phoneInput.focus();
+        return; // Buyurtmani yubormasdan to'xtatish
+    }
+
+    // Agar raqam to'liq bo'lsa, Telegramga yuborish kodi shu yerda davom etadi...
+});
         // 2. Dinamik Narx Kalkulyatori
         function calculateTotal() {
             let basePrice = parseInt(projectSelect.selectedOptions[0].getAttribute('data-price')) || 0;
